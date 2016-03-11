@@ -1,3 +1,6 @@
 print ('hi')
 print ('hi-hi')
 print ("hi hi hi")
+print ('hi')
+print ('hi-hi')
+print ("hi hi hi")
