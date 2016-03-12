@@ -1,7 +1,7 @@
 var_string = "sabrrtuwacaddabra" 
 #longest = "abrrtuw"
 var_string = list(var_string)
-print var_string
+print var_string 
 lis = [[]]
 st = ''
 
