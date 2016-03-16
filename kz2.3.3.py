@@ -1,11 +1,17 @@
 def hangman(word, letters):
-    st = []
+    li = []
+    lis = []
+    lis1 = []
     for a in range(len(letters)):
         if letters[a] in word: 
-           st.append(letters[a])
-    print st
-        
-s = hangman('python', ['a', 'r', 'y', 'i', 'o'])
+            li.append(letters[a])
+    for a in word:
+        if a not in li:
+            lis.append(' _ ')          
+        else: lis.append(a)
+    st = ''.join(lis)
+    st = st.replace('  ', ' ')
+    st = st.strip()
+    return st
 
-print s
 
