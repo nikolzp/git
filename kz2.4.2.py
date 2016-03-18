@@ -1,13 +1,14 @@
-def trimmed_text(text, limit):
-    text_f = text[:limit]
-    print text_f
-#    if text != text_f:
-#        text = text_f.replace((text_f.rfind([-1]), '...'))
-#    print text
-    
-    
+def trimmed_text(text, limit):    
+    if len(text) <= limit:
+        return text
+    tri_tochki = '...'
+    text_f = ''
+    for num, word in enumerate(text.split()):
+        text_f += word + ' '
+        if len(text_f[:-1] + tri_tochki) > limit:
+            if num == 0:
+                return word[:limit - 3] + tri_tochki
+            return text_f[:-len(word)-2] + tri_tochki
+            
 
-text = 'Python is simple to use, but it is a real programming language.'
-a = trimmed_text(text, 27)
-a = a.rfind()
-print a
+    
