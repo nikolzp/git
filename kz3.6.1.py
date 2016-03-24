@@ -5,8 +5,16 @@ class Student(object):
         self.labs = [a*0 for a in range(self.conf.get("lab_num"))]
     
     def set_lab(self, score, number = None):
+        self.number = number
+        if len(self.labs) < self.number:
+            return 'error'
+        if score > self.conf.get("lab_max"):
+            score = self.conf.get("lab_max")
         if number is None:
-            self.labs[0] = score
+            if 0 in self.labs:
+                self.labs[self.labs.index(0)] = score
+            else: 
+                return 'error' 
         else:
             self.labs[number] = score
         return self.labs
@@ -15,11 +23,3 @@ class Student(object):
         okruglenie = sum(self.labs)/float(len(self.labs))
         return round(okruglenie, 1)
     
-    
-    
-ivan = Student("Ivan", {"lab_max": 5, "lab_num": 4})
-print ivan.labs
-print ivan.set_lab(4, 1)
-print ivan.set_lab(5)
-print ivan.average_score()
-print ivan.set_lab(3)
