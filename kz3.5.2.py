@@ -1,27 +1,47 @@
-from datetime import datetime
 import csv
-class Person(object):
-    def __init__(self, surname, first_name, birth_date, nickname = None):
-        self.surname = surname
-        self.first_name = first_name
-        self.birth_date = datetime.strptime(birth_date,"%Y-%m-%d").date()
-        if nickname is None: self.nickname = surname
-        else: self.nickname = nickname
+class Student(object):
+    def __init__(self, name, conf={'lab_max':0, 'lab_num':0}):
+        self.name = name
+        self.conf = conf
+        self.labs = [a*0 for a in range(self.conf.get("lab_num"))]
     
-    def get_fullname(self):
-        return self.surname + ' ' + self.first_name
-    
-    def get_age(self):
-        return str((datetime.today().date() - self.birth_date)/365)[:2]
+    def set_lab(self, score, number = None):
+        self.number = number
+        if len(self.labs) < self.number:
+            return 'error'
+        if score > self.conf.get("lab_max"):
+            score = self.conf.get("lab_max")
+        if number is None:
+            if 0 in self.labs:
+                self.labs[self.labs.index(0)] = score
+            else: 
+                return 'error' 
+        else:
+            self.labs[number] = score
+        return self.labs
+     
+    def average_score(self):
+        okruglenie = sum(self.labs)/float(len(self.labs))
+        return round(okruglenie, 1)
 
-def find_oldest_person(filname):
-    age_name = {}
-    fp = open(filname)
-    fp_csv = (csv.reader(fp))
-    fp_csv.next()
+
+def find_best_student(filename):
+    dic = {} 
+    fp = open(filename)
+    fp.readline()
+    fp_csv = csv.reader(fp)
     for a in fp_csv:
-        each_person = Person(a[0],a[1],a[2])
-        age_name.update({each_person.get_age():[a[0],a[1]]})
-    old_age_name = age_name[max(age_name.keys())]
-    return ' '.join(old_age_name)
-         
+        s = Student(a[0], {'lab_max':int(a[1]), 'lab_num':int(a[2])})
+        for r in range(s.conf.get('lab_num')):
+            ma = {s.name: sum(s.set_lab(int(a[r+3]), r))}
+            dic.update(ma)
+    fp.close()
+    name_val = max(dic.values())
+    name = [a for a in dic if dic[a]==name_val]
+    return name[0]
+    
+
+
+p = find_best_student('student.csv')
+print p
+
